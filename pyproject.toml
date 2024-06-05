@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "agentic-blogger"
+version = "0.1.0"
+description = "Multi-Agent LLM System for Blogging using Crew AI"
+authors = ["Brijesh Modasara <kraken2404@gmail.com>"]
+license = "proprietary"
+packages = [{ include = "agentic_blogger", from = "src" }, ]
+include = ["src/agentic_blogger/res/*"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = "0.28.8"
+duckduckgo-search = "^6.1.2"
+textwrap3 = "^0.9.2"
+crewai-tools = "0.1.6"
+langchain-community = "0.0.29"
+openai = "^1.30.5"
+PyYAML = "^6.0"
+pydantic = "^2.7.3"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10"
+pre-commit = "^2.20"
+pytest = ">=8.0.0,<9.0.0"
+pytest-cov = "^4.0"
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,25 @@
+# Sequential Tasks
+research_task:
+  description: >
+    Use a search tool to conduct thorough research on the {topic_name} and
+    gather most relevant articles on the {topic_name}.
+  expected_output: >
+    The URL of the source and a detailed research summary on {topic_name} topic.
+
+write_task:
+  description: >
+    Write an engaging blog article on {topic_name} topic for NY Times based on
+    the research from the researcher_agent.
+  expected_output: >
+    A well-written blog article draft on {topic_name} in the markdown format.
+
+chief_editor_task:
+  description: >
+    Re-write the article from the Technical Content Writer to make it highly
+    engaging and user-friendly. Correckt any typos, spelling or grammatical
+    mistakes.
+  expected_output: >
+    A polished and ready-to-publish blog article in the markdown format.
+
+# Hierarchial Tasks
+# TODO
