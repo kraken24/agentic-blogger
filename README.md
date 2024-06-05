@@ -1,19 +1,4 @@
-# Multi-Agent LLM System for Blogging
-
-Multi-Agent LLM System for Blogging using Crew AI
-
-## Getting Started
-
-To set up your local development environment, please run:
-
-    poetry install
-
-Behind the scenes, this creates a virtual environment and installs `agentic_blogger` along with its dependencies into a new virtualenv.
-Whenever you run `poetry run <command>`, that `<command>` is actually run inside the virtualenv managed by poetry.
-
-You can now import functions and classes from the module with `import agentic_blogger`.
-
-## Multi-Agent System for Blog Writing
+# Multi-Agent LLM System for Blogging using Crew AI
 
 Large Language Models (LLMs) have revolutionized the field of Natural Language Processing (NLP) in recent years. The models, such as GPT4,Llama, BERT, RoBERTa, and XLNet, are trained on vast amounts of text data and can perform a wide range of NLP tasks with unprecedented accuracy. At their core, LLMs are powerful language understanding machines that can be fine-tuned for specific applications like question answering, sentiment analysis, and text generation.
 
@@ -35,6 +20,17 @@ The multi-agent system comprises of four important parts:
 - `src/main.py`: Update the topic in line 5 `inputs = {"topic_name": "LLM agents in production systems"}`
 
 To execute the code, run the following command in the terminal: `poetry run python src/agentic_blogger/main.py`. This will run the multi-agent system to generate a blog article for you.
+
+## Getting Started
+
+To set up your local development environment, please run:
+
+    poetry install
+
+Behind the scenes, this creates a virtual environment and installs `agentic_blogger` along with its dependencies into a new virtualenv.
+Whenever you run `poetry run <command>`, that `<command>` is actually run inside the virtualenv managed by poetry.
+
+You can now import functions and classes from the module with `import agentic_blogger`.
 
 ## Contact
 
