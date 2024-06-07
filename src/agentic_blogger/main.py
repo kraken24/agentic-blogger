@@ -1,10 +1,23 @@
+from typing import Dict
+
 from crew import SequentialBloggingCrew
+from util import logger
 
 
-def run() -> None:
-    inputs = {"topic_name": "LLMs in Healthcare"}
-    SequentialBloggingCrew().crew().kickoff(inputs=inputs)
+def run(inputs: Dict[str, str] = {"topic_name": "LLMs in Healthcare"}) -> str:
+    result = SequentialBloggingCrew().crew().kickoff(inputs=inputs)
+
+    return result
 
 
 if __name__ == "__main__":
-    run()
+    topic_name = input(
+        "Enter the topic name (or leave blank for default 'LLMs in Healthcare'): "
+    )
+
+    if not topic_name:
+        inputs = {"topic_name": "LLMs in Healthcare"}
+    else:
+        inputs = {"topic_name": topic_name}
+
+    result = run(inputs=inputs)
