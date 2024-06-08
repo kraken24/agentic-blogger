@@ -10,10 +10,11 @@ st.set_page_config(
     page_icon="🧠",
 )
 ss = st.session_state
-ss["blog"] = None
+if "blog" not in st.session_state:
+    st.session_state.blog = None
 
 
-def read_file(file_path):
+def read_file(file_path: str) -> str:
     with open(file_path, "rb") as file:
         return file.read()
 
@@ -35,10 +36,8 @@ def crew_container() -> None:
             if not user_input_topic:
                 st.error("Please enter a topic!")
             else:
-                ss["start_time"] = time.time()
                 with st.spinner(text="Processing..."):
                     ss["blog"] = run(inputs={"topic_name": user_input_topic})
-                ss["end_time"] = time.time()
 
     if ss["blog"]:
         with st.container():
@@ -56,6 +55,7 @@ def crew_container() -> None:
                         data=file_data,
                         file_name=file_name,
                         mime="application/json",
+                        help="Download the file containing sources for the article",
                     )
 
                 with col2:
@@ -67,6 +67,7 @@ def crew_container() -> None:
                         data=file_data,
                         file_name=file_name,
                         mime="text/markdown",
+                        help="Initial draft by the writer",
                     )
 
                 with col3:
@@ -78,6 +79,7 @@ def crew_container() -> None:
                         data=file_data,
                         file_name=file_name,
                         mime="text/markdown",
+                        help="Final article by the editor",
                     )
 
         with st.container():
