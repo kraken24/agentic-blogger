@@ -1,3 +1,5 @@
+from typing import List
+
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import tool
@@ -20,6 +22,7 @@ class SequentialBloggingCrew:
             temperature=0,
         )
         self.search_tool = DuckDuckGoSearchRun()
+        self.research_agent = False
 
     @agent
     def blog_researcher(self) -> Agent:
@@ -69,7 +72,14 @@ class SequentialBloggingCrew:
         )
 
     @crew
-    def crew(self) -> Crew:
+    def crew(
+        self,
+        autoselect: bool = True,
+        selected_agents: List[str] = [
+            "Content Writer",
+            "Editor-in-Chief",
+        ],
+    ) -> Crew:
         """Create the Blogging Crew
 
         Process Flow :
@@ -77,6 +87,28 @@ class SequentialBloggingCrew:
         - Write Blog
         - Refine Blog
         """
+        if not autoselect:
+            print("?" * 100)
+            print(self.agents[0])
+            all_agents = {agent.role: agent for agent in self.agents}
+            from pprint import pprint
+
+            pprint(all_agents)
+            self.agents = [all_agents[role] for role in selected_agents]
+            print("#" * 100)
+            print(self.agents)
+
+            if self.research_agent:
+                self.agents += [self.research_agent]
+                self.tasks += [self.research_blog]
+
+            return Crew(
+                agents=self.agents,
+                tasks=self.tasks,
+                process=Process.sequential,
+                verbose=2,
+            )
+
         return Crew(
             # automatically provides a list due to decorators
             agents=self.agents,

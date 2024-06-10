@@ -20,4 +20,5 @@ if __name__ == "__main__":
     else:
         inputs = {"topic_name": topic_name}
 
-    result = run(inputs=inputs)
+    # result = run(inputs=inputs)
+    SequentialBloggingCrew().crew()
