@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  devcontainer:
+    image: agentic-blogger:latest
+    init: true
+    build:
+      context: .
+    command: ["while sleep 1000; do :; done"]
+    ports:
+      - 8501:8501
