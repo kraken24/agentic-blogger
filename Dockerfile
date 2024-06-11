@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.10.14-slim-bookworm
 LABEL maintainer="Brijesh Modasara"
 
 # Install Poetry
