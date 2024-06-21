@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 logger = logging.getLogger("agentic_blogger")
 
-PROJECT_PATH = Path(__file__).parent.parent.parent.resolve()
+PROJECT_PATH = Path(__file__).parent.parent.parent.parent.resolve()
 
 
 def get_resource_string(path: str, decode=True) -> Union[str, bytes]:
@@ -55,3 +55,7 @@ class ArticleDetails(BaseModel):
     title: str
     url: str
     summary: str
+
+
+if __name__ == "__main__":
+    print(PROJECT_PATH)
