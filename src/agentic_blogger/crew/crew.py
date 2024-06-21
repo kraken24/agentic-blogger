@@ -1,9 +1,11 @@
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import tool
+from langchain.agents import Tool
 from langchain_community.llms import Ollama
-from langchain_community.tools import DuckDuckGoSearchResults, DuckDuckGoSearchRun
-from util import PROJECT_PATH, ArticleDetails
+from langchain_community.tools import DuckDuckGoSearchRun
+
+from agentic_blogger.utils.util import PROJECT_PATH, ArticleDetails
 
 OUTPUT_DIR = PROJECT_PATH / "output"
 
@@ -20,6 +22,11 @@ class SequentialBloggingCrew:
             temperature=0,
         )
         self.search_tool = DuckDuckGoSearchRun()
+        # Tool(
+        #     name="Intermediate Answer",
+        #     func=DuckDuckGoSearchRun().run,
+        #     description="Useful for search-based queries",
+        # )
 
     @agent
     def blog_researcher(self) -> Agent:

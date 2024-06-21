@@ -2,22 +2,22 @@
 research_task:
   description: >
     Use a search tool to conduct thorough research on the {topic_name} and
-    gather most relevant articles on the {topic_name}.
-  expected_output: >
-    The URL of the source and a detailed research summary on {topic_name} topic.
+    gather 10 most relevant references about it.
+  expected_output: A well structured output document that contains three \
+    details for each reference, "Title", "URL", "Summary"
 
 write_task:
   description: >
     Write an engaging blog article on {topic_name} topic for NY Times based on
-    the research from the researcher_agent.
+    the research from the researcher_agent. At the end of the article, provide
+    references that you used to write the blog article.
   expected_output: >
     A well-written blog article draft on {topic_name} in the markdown format.
 
 chief_editor_task:
   description: >
-    Re-write the article from the Technical Content Writer to make it highly
-    engaging and user-friendly. Correckt any typos, spelling or grammatical
-    mistakes.
+    Proof-read the blog article from the Content Writer for grammatical errors
+    and aligment with the standards of NY Times.
   expected_output: >
     A polished and ready-to-publish blog article in the markdown format.
 
