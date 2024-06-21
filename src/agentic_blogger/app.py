@@ -2,8 +2,9 @@ import time
 
 import pandas as pd
 import streamlit as st
-from main import run
-from util import PROJECT_PATH
+
+from agentic_blogger.main import run
+from agentic_blogger.utils.util import PROJECT_PATH, ArticleDetails
 
 st.set_page_config(
     page_title="LLM-based Blogging",

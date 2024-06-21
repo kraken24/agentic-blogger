@@ -1,0 +1,8 @@
+services:
+  blogging-app:
+    image: agentic-blogger:latest
+    init: true
+    build:
+      context: .
+    ports:
+      - 8501:8501
