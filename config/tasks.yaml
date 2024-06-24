@@ -1,25 +1,67 @@
-# Sequential Tasks
-research_task:
-  description: >
-    Use a search tool to conduct thorough research on the {topic_name} and
-    gather 10 most relevant references about it.
-  expected_output: A well structured output document that contains three \
-    details for each reference, "Title", "URL", "Summary"
+# # Sequential Tasks
+# research_task:
+#   description: >
+#     Use a search tool to conduct thorough research on the {topic_name} and
+#     gather 10 most relevant references about it.
+#   expected_output: A well structured output document that contains three \
+#     details for each reference, "Title", "URL", "Summary"
 
-write_task:
-  description: >
-    Write an engaging blog article on {topic_name} topic for NY Times based on
-    the research from the researcher_agent. At the end of the article, provide
-    references that you used to write the blog article.
-  expected_output: >
-    A well-written blog article draft on {topic_name} in the markdown format.
+# write_task:
+#   description: >
+#     Write an engaging blog article on {topic_name} topic for NY Times based on
+#     the research from the researcher_agent. At the end of the article, provide
+#     references that you used to write the blog article.
+#   expected_output: >
+#     A well-written blog article draft on {topic_name} in the markdown format.
 
-chief_editor_task:
-  description: >
-    Proof-read the blog article from the Content Writer for grammatical errors
-    and aligment with the standards of NY Times.
-  expected_output: >
-    A polished and ready-to-publish blog article in the markdown format.
+# chief_editor_task:
+#   description: >
+#     Proof-read the blog article from the Content Writer for grammatical errors
+#     and aligment with the standards of NY Times.
+#   expected_output: >
+#     A polished and ready-to-publish blog article in the markdown format.
 
 # Hierarchial Tasks
 # TODO
+
+research_task:
+  description: Conduct thorough research on a given topic to uncover detailed
+    and accurate information. Focus on identifying key trends, facts, and data
+    points that are relevant to the topic.
+  expected_output: A well-structured research report that contains 10 most
+    relevant articles
+
+writing_task:
+  description: Compose an insightful and engaging article based on the research
+    findings. Ensure that the article is well-structured, easy to understand, and
+    adheres to the given topic.
+  expected_output: A well-written blog article {blog_article} on {topic_name}
+    in the markdown format.
+
+seo_task:
+  description: Optimize a given blog article {blog_article} to improve its
+    ranking on search engine results pages (SERPs) for a specific topic.
+    This involves keyword research, on-page SEO optimization, and enhancing the
+    overall readability and engagement of the article.
+  expected_output: An optimized blog article with improved SEO elements,
+    including meta tags, headings, keyword density, and internal/external links,
+    ensuring it ranks higher for {topic_name} in the markdown format.
+
+grammar_style_task:
+  description: Proofread and edit the blog article {blog_article} for grammar,
+    style, and readability. Ensure that the content flows smoothly and adheres to
+    professional writing standards.
+  expected_output: A polished document with corrected grammar and improved
+    writing style in the markdown format.
+
+fact_checking_task:
+  description: Verify the accuracy of information in a given document by
+    cross-referencing with reliable sources. Ensure that all claims and data are
+    factual and up-to-date.
+  expected_output: A document annotated with verified facts and corrections
+    where necessary in the markdown format.
+
+visual_content_task:
+  description: Suggest and describe appropriate visual content to complement the blog post
+  expected_output: A document with relevant visual graphics inserted at the
+    relevant location in the markdown document.

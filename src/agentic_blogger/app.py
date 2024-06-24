@@ -1,4 +1,5 @@
 import time
+from textwrap import dedent
 
 import pandas as pd
 import streamlit as st
@@ -12,9 +13,9 @@ st.set_page_config(
 )
 ss = st.session_state
 
-for var in ["blog", "user_topic", "user_blog"]:
+for var in ["blog", "user_topic", "user_blog", "selected_agents", "ai_blog"]:
     if var not in st.session_state:
-        st.session_state.blog = None
+        st.session_state[var] = None
 
 
 def read_file(file_path: str) -> str:
@@ -31,50 +32,35 @@ def create_title_container() -> None:
 
 def create_agent_selection_sidebar() -> None:
     with st.sidebar:
-        st.write(":control_knobs: Select required LLM-Agents:")
-        writer_agent = st.checkbox("Writer Agent", value=True, disabled=True)
-        editor_agent = st.checkbox("Editor Agent", value=True, disabled=True)
-        research_agent = st.checkbox("Research Agent", value=True)
-        seo_agent = st.checkbox("SEO Agent", value=True)
-        style_agent = st.checkbox("Style Agent", value=True)
-        plagiarism_agent = st.checkbox("Plagiarism Agent", value=True)
+        st.write(":notes: Select required LLM-Agents:")
+        research_agent = st.checkbox("Research Agent", value=False)
+        writer_agent = st.checkbox("Writer Agent", value=False)
+        seo_agent = st.checkbox("SEO Agent", value=False)
+        grammar_style_agent = st.checkbox("Style Agent", value=False)
+        fact_checker_agent = st.checkbox("Fact Checker Agent", value=False)
+        visual_content_agent = st.checkbox("Visual Content Agent", value=False)
 
-        with st.expander(label="Agent Workflow"):
-            st.write(":control_knobs:")
-            st.write(":control_knobs:")
-            st.write(":control_knobs:")
-            st.write(":control_knobs:")
-            st.write(":control_knobs:")
+    selected_agents = []
+
+    if research_agent:
+        selected_agents.append("Research Agent")
+    if writer_agent:
+        selected_agents.append("Writer Agent")
+    if seo_agent:
+        selected_agents.append("SEO Agent")
+    if grammar_style_agent:
+        selected_agents.append("Style Agent")
+    if fact_checker_agent:
+        selected_agents.append("Fact Checker Agent")
+    if visual_content_agent:
+        selected_agents.append("Visual Content Agent")
+
+    ss["selected_agents"] = selected_agents
 
     return None
 
 
-def create_crew_container() -> None:
-    with st.container():
-        ss["user_topic"] = st.text_input(
-            "Enter your blog topic:", placeholder="What do you want to write about?"
-        )
-
-        ss["user_blog"] = st.text_area("Write your blog here:", value=None)
-
-        if st.button("Work Your Squad!"):
-            if not ss["user_topic"] and not ss["user_blog"]:
-                st.error("Please enter a topic or provide a blog input!")
-            else:
-                with st.spinner(text="Processing..."):
-                    ss["blog"] = run(
-                        inputs={
-                            "topic_name": ss["user_topic"] + ss["user_blog"],
-                            "user_blog": ss["user_blog"],
-                        }
-                    )
-    return None
-
-
-def display_blog_container() -> None:
-    if not ss["blog"]:
-        return None
-
+def display_blog_files() -> None:
     with st.container():
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -112,8 +98,53 @@ def display_blog_container() -> None:
                 help="Final article by the editor",
             )
 
+    return None
+
+
+def create_blogging_container() -> None:
     with st.container():
-        st.write(ss["blog"])
+        ss["user_topic"] = st.text_input(
+            "Enter your blog topic:", placeholder="What do you want to write about?"
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            ss["user_blog"] = st.text_area(
+                "Original Blog",
+                value=dedent(
+                    "The citye parkk is a grate plaice for familys to spennd time \
+                    togethur and enjoing the outdors, it has a playgrouns, picknik areas, \
+                    and walking trales. Howevver, itt is ofen crowdd especially on weakends \
+                    wen evryone wants to enjooy the nice wether and there can bee a lot of noize. \
+                    The parkk is well-maintayned, but sum of the benches are in need of reppair \
+                    and ther is somtimes litter that hasnt been picked upp. Despit these minur isues, \
+                    itt still a populer spot for bothe locals and vistors alike."
+                ),
+                height=500,
+            )
+
+        with col2:
+            ss["ai_blog"] = st.text_area(
+                "Updated Blog", value=st.session_state["ai_blog"], height=500
+            )
+
+        if st.button("Work Your Squad!"):
+            if not ss["user_blog"]:
+                st.error("Please provide a blog input!")
+            elif not ss["selected_agents"]:
+                st.error("Please select required agents")
+            else:
+                with st.spinner(text="Processing..."):
+                    time.sleep(5)
+                    ss["ai_blog"] = run(
+                        inputs={
+                            "topic_name": ss["user_topic"],
+                            "blog_article": ss["user_blog"],
+                        },
+                        selected_agent_list=ss["selected_agents"],
+                    )
+
+        if ss["ai_blog"]:
+            display_blog_files()
 
     return None
 
@@ -121,8 +152,7 @@ def display_blog_container() -> None:
 def app() -> None:
     create_title_container()
     create_agent_selection_sidebar()
-    create_crew_container()
-    display_blog_container()
+    create_blogging_container()
 
     return None
 

@@ -23,103 +23,134 @@ class SequentialBloggingCrew:
             model="llama3",
             temperature=0,
         )
+        self.agent_task_dict = {}
         self.search_tool = DuckDuckGoSearchRun()
-        self.research_agent = False
-        # Tool(
-        #     name="Intermediate Answer",
-        #     func=DuckDuckGoSearchRun().run,
-        #     description="Useful for search-based queries",
-        # )
 
     @agent
-    def blog_researcher(self) -> Agent:
+    def researcher_agent(self) -> Agent:
         return Agent(
             config=self.agents_config["researcher_agent"],
             llm=self.llama3,
         )
 
     @agent
-    def blog_writer(self) -> Agent:
+    def writer_agent(self) -> Agent:
         return Agent(
             config=self.agents_config["writer_agent"],
             llm=self.llama3,
         )
 
     @agent
-    def editor_in_chief(self) -> Agent:
+    def fact_checker_agent(self) -> Agent:
         return Agent(
-            config=self.agents_config["chief_editor_agent"],
+            config=self.agents_config["fact_checker_agent"],
+            llm=self.llama3,
+        )
+
+    @agent
+    def visual_content_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config["visual_content_agent"],
+            llm=self.llama3,
+        )
+
+    @agent
+    def seo_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config["seo_agent"],
+            llm=self.llama3,
+        )
+
+    @agent
+    def grammar_style_agent(self) -> Agent:
+        return Agent(
+            config=self.agents_config["grammar_style_agent"],
             llm=self.llama3,
         )
 
     @task
-    def research_blog(self) -> Task:
+    def research_task(self) -> Task:
         return Task(
             config=self.tasks_config["research_task"],
-            agent=self.blog_researcher(),
+            agent=self.researcher_agent(),
             output_json=ArticleDetails,
             output_file=(OUTPUT_DIR / "articles.json").as_posix(),
             tools=[self.search_tool],
         )
 
     @task
-    def write_blog(self) -> Task:
+    def writing_task(self) -> Task:
         return Task(
-            config=self.tasks_config["write_task"],
-            agent=self.blog_writer(),
-            output_file=(OUTPUT_DIR / "initial_draft.md").as_posix(),
+            config=self.tasks_config["writing_task"],
+            agent=self.writer_agent(),
+            output_file=(OUTPUT_DIR / "final_draft_writer.md").as_posix(),
         )
 
     @task
-    def refine_blog(self) -> Task:
+    def fact_checking_task(self) -> Task:
         return Task(
-            config=self.tasks_config["chief_editor_task"],
-            agent=self.editor_in_chief(),
+            config=self.tasks_config["fact_checking_task"],
+            agent=self.fact_checker_agent(),
+            output_file=(OUTPUT_DIR / "final_draft_fact.md").as_posix(),
+        )
+
+    @task
+    def visual_content_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["visual_content_task"],
+            agent=self.visual_content_agent(),
+            output_file=(OUTPUT_DIR / "final_draft_vis.md").as_posix(),
+        )
+
+    @task
+    def seo_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["seo_task"],
+            agent=self.seo_agent(),
+            output_file=(OUTPUT_DIR / "final_draft.md").as_posix(),
+        )
+
+    @task
+    def grammar_style_task(self) -> Task:
+        return Task(
+            config=self.tasks_config["grammar_style_task"],
+            agent=self.grammar_style_agent(),
             output_file=(OUTPUT_DIR / "final_draft.md").as_posix(),
         )
 
     @crew
     def crew(
         self,
-        autoselect: bool = True,
-        selected_agents: List[str] = [
-            "Content Writer",
-            "Editor-in-Chief",
-        ],
+        selected_agent_list: List[Agent] = [],
     ) -> Crew:
-        """Create the Blogging Crew
-
-        Process Flow :
-        - Research Blog
-        - Write Blog
-        - Refine Blog
-        """
-        if not autoselect:
-            print("?" * 100)
-            print(self.agents[0])
-            all_agents = {agent.role: agent for agent in self.agents}
-            from pprint import pprint
-
-            pprint(all_agents)
-            self.agents = [all_agents[role] for role in selected_agents]
-            print("#" * 100)
-            print(self.agents)
-
-            if self.research_agent:
-                self.agents += [self.research_agent]
-                self.tasks += [self.research_blog]
-
-            return Crew(
-                agents=self.agents,
-                tasks=self.tasks,
-                process=Process.sequential,
-                verbose=2,
-            )
+        self.agent_task_dict = {
+            "Research Agent": [self.researcher_agent(), self.research_task()],
+            "Writer Agent": [self.writer_agent(), self.writing_task()],
+            "SEO Agent": [self.seo_agent(), self.seo_task()],
+            "Style Agent": [self.grammar_style_agent(), self.grammar_style_task()],
+            "Fact Checker Agent": [
+                self.fact_checker_agent(),
+                self.fact_checking_task(),
+            ],
+            "Visual Content Agent": [
+                self.visual_content_agent(),
+                self.visual_content_task(),
+            ],
+        }
+        agent_list, task_list = [], []
+        if selected_agent_list:
+            for agent in selected_agent_list:
+                agent_list.append(self.agent_task_dict[agent][0])
+                task_list.append(self.agent_task_dict[agent][1])
+        print(agent_list)
+        print("#" * 100)
+        print(task_list)
 
         return Crew(
-            # automatically provides a list due to decorators
-            agents=self.agents,
-            tasks=self.tasks,
+            agents=self.agents if not agent_list else agent_list,
+            tasks=self.tasks if not task_list else task_list,
             process=Process.sequential,
+            full_output=True,
             verbose=2,
+            output_log_file="./crew_logs.txt",
         )
