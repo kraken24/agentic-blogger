@@ -39,3 +39,16 @@ Brijesh Modasara (kraken2404@gmail.com)
 ## License
 
 © Brijesh Modasara
+
+
+
+
+
+
+# Points to talk about:
+1. Memory
+2. Computation
+3. Modularization
+4.
+
+- additional processes

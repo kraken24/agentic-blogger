@@ -134,7 +134,6 @@ def create_blogging_container() -> None:
                 st.error("Please select required agents")
             else:
                 with st.spinner(text="Processing..."):
-                    time.sleep(5)
                     ss["ai_blog"] = run(
                         inputs={
                             "topic_name": ss["user_topic"],
@@ -143,8 +142,8 @@ def create_blogging_container() -> None:
                         selected_agent_list=ss["selected_agents"],
                     )
 
-        if ss["ai_blog"]:
-            display_blog_files()
+        # if ss["ai_blog"]:
+        #     display_blog_files()
 
     return None
 

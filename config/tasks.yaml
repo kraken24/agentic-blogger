@@ -1,29 +1,3 @@
-# # Sequential Tasks
-# research_task:
-#   description: >
-#     Use a search tool to conduct thorough research on the {topic_name} and
-#     gather 10 most relevant references about it.
-#   expected_output: A well structured output document that contains three \
-#     details for each reference, "Title", "URL", "Summary"
-
-# write_task:
-#   description: >
-#     Write an engaging blog article on {topic_name} topic for NY Times based on
-#     the research from the researcher_agent. At the end of the article, provide
-#     references that you used to write the blog article.
-#   expected_output: >
-#     A well-written blog article draft on {topic_name} in the markdown format.
-
-# chief_editor_task:
-#   description: >
-#     Proof-read the blog article from the Content Writer for grammatical errors
-#     and aligment with the standards of NY Times.
-#   expected_output: >
-#     A polished and ready-to-publish blog article in the markdown format.
-
-# Hierarchial Tasks
-# TODO
-
 research_task:
   description: Conduct thorough research on a given topic to uncover detailed
     and accurate information. Focus on identifying key trends, facts, and data
